@@ -1,11 +1,15 @@
 var apiKey = "c5b6629140f3fee5f9365a733c6ccf73";
-var lat = 39.742043;
-var lon = -104.991531;
 var searchHistory = [];
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("search-button").addEventListener("click", searchWeather);
-})
+});
+
+function searchWeather() {
+    var city = document.getElementById("city").value;
+    var country = document.getElementById("country").value;
+    getApi(city,country,apiKey);
+}
 
 function getApi(city, countryCode, apiKeyParam) {
     var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city},${countryCode}&appid=${apiKeyParam}`;
@@ -20,17 +24,7 @@ function getApi(city, countryCode, apiKeyParam) {
             }
         })
         .then(function (data) {
-            // display temperature variable
-            var temperature = data.main.temp;
-
-            // create a list item to display temperature
-            var listItem = document.createElement('li');
-            listItem.textContent = `Temperature in ${city}, ${countryCode}: ${temperature}`;
-
-            // append li to the tempholder container
-            var tempHolder = document.getElementById('tempHolder');
-            tempHolder.appendChild(listItem);
-
+            displayWeather(data);
             console.log(data);
         })
         .catch(function (error) {
@@ -38,6 +32,11 @@ function getApi(city, countryCode, apiKeyParam) {
             console.error("Error fetching data:", error);
         });
 }
-
-var city = "Denver";
-var countryCode = "US";
+function displayWeather(data) {
+    document.getElementById("city-name").innerText = data.name;
+    document.getElementById("date").innerText = new Date().toLocaleDateString();
+    // FIX THIS!!!!
+    document.getElementById("icon").innerHTML = "img src="<https://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="Weather Icon">`;
+    // FIX THIS to make it fahrenheit
+    document.getElementById("temperature").innerText = "Temperature: ${data.main.temp} degrees celcious";
+}
