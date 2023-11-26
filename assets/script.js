@@ -1,44 +1,42 @@
 var apiKey = "c5b6629140f3fee5f9365a733c6ccf73";
-var lat =  39.742043;
+var lat = 39.742043;
 var lon = -104.991531;
 
-function getApi(lat, lon, apiKey) {
-    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API key}";
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("search-button").addEventListener("click", searchWeather);
+})
+
+function getApi(city, countryCode, apiKeyParam) {
+    var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city},${countryCode}&appid=${apiKeyParam}`;
 
     fetch(apiUrl)
         .then(function (response) {
+            // error handling for API Key fetch
             if (!response.ok) {
                 alert("API error!");
             } else {
-            return response.json();
-    }
-    })
-        // .then(function (data) {
-        //     for (var i = 0; i < data.length; i++) {
-        //         var listItem = document.createElement('li');
-        //         listItem.textContent = data[i].html_url;
-        //         repoList.appendChild(listItem);
-        //       }
-        //     if (data) {
-        //         console.log(data);
-        //     } else {
-        //         alert("Api data error!");
-        //     }
-        // });
+                return response.json();
+            }
+        })
+        .then(function (data) {
+            // display temperature variable
+            var temperature = data.main.temp;
 
-            .then(function (data) {
-                var temp = data.main.temp;
+            // create a list item to display temperature
+            var listItem = document.createElement('li');
+            listItem.textContent = `Temperature in ${city}, ${countryCode}: ${temperature}`;
 
-                var listItem = document.createElement("li");
-                listItem.textContent = "Temperature: ${temperature}";
-                var tempholder = document.getElementById("tempholder");
-                tempholder.appendChild(listItem);
+            // append li to the tempholder container
+            var tempHolder = document.getElementById('tempHolder');
+            tempHolder.appendChild(listItem);
 
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.error("Error fetching data!", error);
-            });
-            
+            console.log(data);
+        })
+        .catch(function (error) {
+            // error handling in case of page error
+            console.error("Error fetching data:", error);
+        });
 }
-getApi(lat, lon, apiKey);
+
+var city = "Denver";
+var countryCode = "US";
