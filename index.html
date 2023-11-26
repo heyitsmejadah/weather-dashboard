@@ -7,12 +7,24 @@
     <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-    <div class="search-form">
+    <div id="search-form">
         <h1>Weather Dashboard</h1>
-        <h2>Enter a city to view weather data:</h2>
-        <input type="text" class="city" placeholder="Enter city here">
+        <h2>Enter a city:</h2>
+        <input type="text" id="city" placeholder="Enter city here">
+        <h2>Enter a country code:</h2>
+        <input type="text" id="country" placeholder="Enter country code here">
         <button id="search-button">Search</button>
     </div>
+    <div id="weather-info">
+        <h3 id="city-name"></h3>
+        <p id="date"></p>
+        <p id="icon"></p>
+        <p id="temperature"></p>
+    </div>
+
+    <div id="forecast" class="forecast-container"></div>
+
+    <ul id="tempHolder"></ul>
 </body>
 <script src="./assets/script.js"></script>
 </html>

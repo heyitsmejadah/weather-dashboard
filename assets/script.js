@@ -1,6 +1,7 @@
 var apiKey = "c5b6629140f3fee5f9365a733c6ccf73";
 var lat = 39.742043;
 var lon = -104.991531;
+var searchHistory = [];
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("search-button").addEventListener("click", searchWeather);
