@@ -52,30 +52,33 @@ data.list.forEach(function (forecastItem) {
     if (!uniqueDates[dateString]) {
         uniqueDates[dateString] = true;
 
+        const forecastItemDiv = document.createElement("div");
     //generate each element dynamically
     const cityNameElement= document.createElement("h3");
     cityNameElement.innerText = data.city.name;
-    forecast.appendChild(cityNameElement);
+    forecastItemDiv.appendChild(cityNameElement);
 
     const dateElement = document.createElement("p");
     dateElement.innerText = date.toLocaleDateString();
-    forecast.appendChild(dateElement);
+    forecastItemDiv.appendChild(dateElement);
    
     const iconElement = document.createElement("div");
     iconElement.innerHTML = `<img src="https://openweathermap.org/img/w/${forecastItem.weather[0].icon}.png" alt="Weather Icon">`;
-    forecast.appendChild(iconElement);
+    forecastItemDiv.appendChild(iconElement);
 
     const temperatureElement = document.createElement("p");
     temperatureElement.innerText = `${forecastItem.main.temp} °F`;
-    forecast.appendChild(temperatureElement);
+    forecastItemDiv.appendChild(temperatureElement);
 
     const humidityElement = document.createElement("p");
     humidityElement.innerText = `Humidity: ${forecastItem.main.humidity}`;
-    forecast.appendChild(humidityElement);
+    forecastItemDiv.appendChild(humidityElement);
 
     const windSpeed = document.createElement("p");
     windSpeed.innerText = `Wind: ${forecastItem.wind.speed} mph`;
-    forecast.appendChild(windSpeed);
+    forecastItemDiv.appendChild(windSpeed);
+
+    forecast.appendChild(forecastItemDiv);
 }});
 //update search history when user inputs city and country code
     if (!searchHistory.includes(data.city.name)) {
