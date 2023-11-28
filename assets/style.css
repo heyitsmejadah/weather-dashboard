@@ -6,6 +6,6 @@ body {
     margin-bottom: 20px;
 }
 
-#weather-info {
-    display: none;
+.container {
+    background-color: aqua;
 }
