@@ -12,7 +12,7 @@ function searchWeather() {
 }
 
 function getApi(city, countryCode, apiKey) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city},${countryCode}&appid=${apiKey}&units=imperial`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city},${countryCode}&appid=${apiKey}&units=imperial`;
     
     fetch(apiUrl)
         .then(function (response) {
@@ -24,41 +24,54 @@ function getApi(city, countryCode, apiKey) {
         })
         .then(function (data) {
             console.log(data);
-            displayWeather(data);
+            displayWeatherForecast(data);
         })
         .catch(function (error) {
             // error handling in case of page error
             console.error("Error fetching data:", error);
         });
 }
-// I NEED TO APPEND THE DISPLAYWEATHER ITEMS TO SOMETHING FOR THEM TO APPEAR
-function displayWeather(data) {
-    const forecast = document.getElementById("forecast")
+
+function displayWeatherForecast(data) {
+    const forecast = document.getElementById("forecast");
     forecast.innerHTML = "";
 
-    const cityNameElement= document.createElement("h2");
-    cityNameElement.innerText = data.name;
+    const uniqueDates = {};
+
+data.list.forEach(function (forecastItem) {
+    const date = new Date(forecastItem.dt * 1000);
+    const dateString = date.toISOString().split("T")[0];
+    if (!uniqueDates[dateString]) {
+        uniqueDates[dateString] = true;
+
+    const cityNameElement= document.createElement("h3");
+    cityNameElement.innerText = data.city.name;
     forecast.appendChild(cityNameElement);
 
-    const currentDateElement = document.createElement("p");
-    const currentDate = new Date();
-    currentDateElement.innerText = currentDate.toLocaleDateString();
-    forecast.appendChild(currentDateElement)
+    const dateElement = document.createElement("p");
+    dateElement.innerText = date.toLocaleDateString();
+    forecast.appendChild(dateElement);
    
     const iconElement = document.createElement("div");
-    iconElement.innerHTML = `<img src="https://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="Weather Icon">`;
+    iconElement.innerHTML = `<img src="https://openweathermap.org/img/w/${forecastItem.weather[0].icon}.png" alt="Weather Icon">`;
     forecast.appendChild(iconElement);
 
     const temperatureElement = document.createElement("p");
-    temperatureElement.innerText = `${data.main.temp} °F`;
+    temperatureElement.innerText = `${forecastItem.main.temp} °F`;
     forecast.appendChild(temperatureElement);
 
-    if (!searchHistory.includes(data.name)) {
-        searchHistory.push(data.name);
+    const humidityElement = document.createElement("p");
+    humidityElement.innerText = `Humidity: ${forecastItem.main.humidity}`;
+    forecast.appendChild(humidityElement);
+
+    const windSpeed = document.createElement("p");
+    windSpeed.innerText = `Wind: ${forecastItem.wind.speed} mph`;
+    forecast.appendChild(windSpeed);
+}});
+    if (!searchHistory.includes(data.city.name)) {
+        searchHistory.push(data.city.name);
         updateSearchHistory();
     }
-
-
 }
 
 function updateSearchHistory() {
