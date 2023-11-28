@@ -92,18 +92,24 @@ function updateSearchHistory() {
     //clear previous history
     historyList.innerHTML = "";
 
+
     searchHistory.forEach(function(search) {
+        //split search string into city and country
         const [city, country] = search.split(",");
+
+        //create a list item element
         const listItem = document.createElement("li");
         listItem.textContent = search;
 
         // store city and country info
         listItem.setAttribute("data-city",city);
         listItem.setAttribute("data-country",country);
+
 //attemps at making history items clickable to retrieve 5 day forecast
         listItem.addEventListener("click",function() {
             const clickedCity = listItem.getAttribute("data-city");
             const clickedCountry = listItem.getAttribute("data-country");
+            
             getApi(clickedCity, clickedCountry, apiKey);
         });
         historyList.appendChild(listItem);
